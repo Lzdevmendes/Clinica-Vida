@@ -1,1 +1,35 @@
 .env
+# Ambientes virtuais
+.venv/
+venv/
+
+# Caches do Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Arquivos de log
+*.log
+
+# Configs do VSCode/PyCharm
+.vscode/
+.idea/
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Banco de dados SQLite (se não quiser versionar)
+*.sqlite3
+*.db
+
+# Dependências baixadas (não precisa versionar)
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Arquivos temporários
+*.tmp
+*.swp
+*.bak
