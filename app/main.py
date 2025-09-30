@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from app.routes import auth_routes, paciente_routes, consulta_routes
+# Import all models to ensure relationships are registered
+from app.models import user, patient, doctor, consulta
 
 app = FastAPI(title="Clínica Vida+ API", version="0.1")
 

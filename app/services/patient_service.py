@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from typing import List, Optional
 from app.models.patient import Patient
-from app.schemas.patient.schema import PatientCreate, PatientUpdate
+from app.schemas.patient_schema import PatientCreate, PatientUpdate
 
 class PatientService:
     def __init__(self, db: Session):
