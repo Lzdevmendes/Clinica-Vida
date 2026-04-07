@@ -27,3 +27,9 @@ async def create_patient(patient_data: PatientCreate, db: Session = Depends(get_
 async def update_patient(patient_id: int, patient_data: PatientUpdate, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
     service = PatientService(db)
     return service.update_patient(patient_id, patient_data)
+
+
+@router.delete("/patients/{patient_id}", status_code=204)
+async def delete_patient(patient_id: int, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
+    service = PatientService(db)
+    service.delete_patient(patient_id)

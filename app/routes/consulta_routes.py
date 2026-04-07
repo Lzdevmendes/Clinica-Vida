@@ -36,3 +36,9 @@ async def update_consultation_status(consultation_id: int, status_data: StatusUp
 async def update_consultation(consultation_id: int, consultation_data: ConsultationUpdate, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
     service = ConsultationService(db)
     return service.update_consultation(consultation_id, consultation_data)
+
+
+@router.delete("/consultations/{consultation_id}", status_code=204)
+async def delete_consultation(consultation_id: int, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
+    service = ConsultationService(db)
+    service.delete_consultation(consultation_id)
