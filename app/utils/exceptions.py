@@ -18,6 +18,14 @@ class PatientNotFound(ClinicaException):
             detail="Patient not found"
         )
 
+
+class PatientProfileAlreadyExists(ClinicaException):
+    def __init__(self):
+        super().__init__(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Patient profile already exists for this user"
+        )
+
 class ConsultationNotFound(ClinicaException):
     def __init__(self):
         super().__init__(

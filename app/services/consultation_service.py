@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from typing import List
-from datetime import datetime
 from app.models.consulta import Consultation
 from app.schemas.consultation_schema import ConsultationCreate, ConsultationUpdate
+from app.utils.exceptions import ConsultationNotFound
 
 class ConsultationService:
     def __init__(self, db: Session):
@@ -17,10 +17,7 @@ class ConsultationService:
             Consultation.id == consultation_id
         ).first()
         if not consultation:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Consultation not found"
-            )
+            raise ConsultationNotFound()
         return consultation
 
     def get_consultations_by_patient(self, patient_id: int) -> List[Consultation]:

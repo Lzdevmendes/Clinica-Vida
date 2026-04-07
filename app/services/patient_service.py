@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
-from fastapi import HTTPException, status
 from typing import List, Optional
 from app.models.patient import Patient
 from app.schemas.patient_schema import PatientCreate, PatientUpdate
+from app.utils.exceptions import PatientNotFound, PatientProfileAlreadyExists
 
 class PatientService:
     def __init__(self, db: Session):
@@ -14,10 +14,7 @@ class PatientService:
     def get_patient_by_id(self, patient_id: int) -> Patient:
         patient = self.db.query(Patient).filter(Patient.id == patient_id).first()
         if not patient:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Patient not found"
-            )
+            raise PatientNotFound()
         return patient
 
     def get_patient_by_user_id(self, user_id: int) -> Optional[Patient]:
@@ -26,10 +23,7 @@ class PatientService:
     def create_patient(self, patient_data: PatientCreate) -> Patient:
         existing_patient = self.get_patient_by_user_id(patient_data.user_id)
         if existing_patient:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Patient profile already exists for this user"
-            )
+            raise PatientProfileAlreadyExists()
 
         patient = Patient(**patient_data.dict())
         self.db.add(patient)
