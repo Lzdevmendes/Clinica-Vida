@@ -16,11 +16,14 @@ class StatusUpdate(BaseModel):
 async def get_consultations(
     skip: int = Query(0, ge=0, description="Records to skip"),
     limit: int = Query(20, ge=1, le=100, description="Max records to return"),
+    patient_id: int = Query(None, description="Filter by patient ID"),
+    doctor_id: int = Query(None, description="Filter by doctor ID"),
+    status: str = Query(None, description="Filter by status"),
     db: Session = Depends(get_db),
     current_user: dict = Depends(get_current_user)
 ):
     service = ConsultationService(db)
-    return service.get_all_consultations(skip=skip, limit=limit)
+    return service.get_all_consultations(skip=skip, limit=limit, patient_id=patient_id, doctor_id=doctor_id, status=status)
 
 @router.get("/consultations/{consultation_id}", response_model=ConsultationResponse)
 async def get_consultation(consultation_id: int, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
