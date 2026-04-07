@@ -45,3 +45,19 @@ class InactiveUser(ClinicaException):
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="User account is inactive"
         )
+
+
+class DoctorNotFound(ClinicaException):
+    def __init__(self):
+        super().__init__(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Doctor not found"
+        )
+
+
+class LicenseAlreadyRegistered(ClinicaException):
+    def __init__(self):
+        super().__init__(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="License number already registered"
+        )
