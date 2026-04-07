@@ -8,8 +8,8 @@ class PatientService:
     def __init__(self, db: Session):
         self.db = db
 
-    def get_all_patients(self) -> List[Patient]:
-        return self.db.query(Patient).all()
+    def get_all_patients(self, skip: int = 0, limit: int = 20) -> List[Patient]:
+        return self.db.query(Patient).offset(skip).limit(limit).all()
 
     def get_patient_by_id(self, patient_id: int) -> Patient:
         patient = self.db.query(Patient).filter(Patient.id == patient_id).first()

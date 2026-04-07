@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 from typing import List
 from pydantic import BaseModel
@@ -13,9 +13,14 @@ class StatusUpdate(BaseModel):
     status: str
 
 @router.get("/consultations", response_model=List[ConsultationResponse])
-async def get_consultations(db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
+async def get_consultations(
+    skip: int = Query(0, ge=0, description="Records to skip"),
+    limit: int = Query(20, ge=1, le=100, description="Max records to return"),
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
+):
     service = ConsultationService(db)
-    return service.get_all_consultations()
+    return service.get_all_consultations(skip=skip, limit=limit)
 
 @router.get("/consultations/{consultation_id}", response_model=ConsultationResponse)
 async def get_consultation(consultation_id: int, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):

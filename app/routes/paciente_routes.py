@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 from typing import List
 from app.database import get_db
@@ -9,9 +9,14 @@ from app.routes.auth_routes import get_current_user
 router = APIRouter()
 
 @router.get("/patients", response_model=List[PatientResponse])
-async def get_patients(db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
+async def get_patients(
+    skip: int = Query(0, ge=0, description="Records to skip"),
+    limit: int = Query(20, ge=1, le=100, description="Max records to return"),
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
+):
     service = PatientService(db)
-    return service.get_all_patients()
+    return service.get_all_patients(skip=skip, limit=limit)
 
 @router.get("/patients/{patient_id}", response_model=PatientResponse)
 async def get_patient(patient_id: int, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):

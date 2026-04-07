@@ -9,8 +9,8 @@ class ConsultationService:
     def __init__(self, db: Session):
         self.db = db
 
-    def get_all_consultations(self) -> List[Consultation]:
-        return self.db.query(Consultation).all()
+    def get_all_consultations(self, skip: int = 0, limit: int = 20) -> List[Consultation]:
+        return self.db.query(Consultation).offset(skip).limit(limit).all()
 
     def get_consultation_by_id(self, consultation_id: int) -> Consultation:
         consultation = self.db.query(Consultation).filter(
